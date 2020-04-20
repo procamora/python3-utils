@@ -15,7 +15,7 @@ logger: logging = get_logging(False, 'sqlite')
 
 
 def conection_sqlite(database: Path, query: Text, mutex: Lock = None, is_dict: bool = False) \
-        -> Union[List[Dict[Text, Any]], None]:
+        -> Union[List[Dict[Text, Any]], List[List[Text, Any]], None]:
     if mutex is not None:
         mutex.acquire()  # bloqueamos acceso a db
     try:
