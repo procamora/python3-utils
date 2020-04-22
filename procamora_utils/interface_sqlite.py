@@ -5,6 +5,7 @@ __all__ = ['conection_sqlite', 'execute_script_sqlite', 'dump_database']
 
 import logging
 import sqlite3
+import sys
 from pathlib import Path  # nueva forma de trabajar con rutas
 from threading import Lock
 from typing import Dict, Any, List, Union, Tuple, Optional, Text
@@ -15,7 +16,7 @@ logger: logging = get_logging(False, 'sqlite')
 
 
 def conection_sqlite(database: Path, query: Text, mutex: Lock = None, is_dict: bool = False) \
-        -> Union[List[Dict[Text, Any]], List[Tuple[Text, Any]], None]:
+        -> Union[List[Dict[Text, Any]], List[Tuple[Any, ...]], None]:
     if mutex is not None:
         mutex.acquire()  # bloqueamos acceso a db
     try:
@@ -38,8 +39,12 @@ def conection_sqlite(database: Path, query: Text, mutex: Lock = None, is_dict: b
         else:
             logger.critical(f'Database {database} not exits')
             raise OSError(f'Database {database} not exits')
-    except sqlite3.OperationalError:
-        logger.critical(f'LOCK {query}, sorry...')
+    except sqlite3.OperationalError as e:
+        logger.critical(f'LOCK DB in query: {query}, sorry...')
+        logger.critical(e)
+        if mutex is not None:
+            mutex.release()  # liberamos mutex
+        sys.exit(-1)
     finally:
         if mutex is not None:
             mutex.release()  # liberamos mutex
