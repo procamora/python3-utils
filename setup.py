@@ -9,12 +9,12 @@ from setuptools import setup
 this_directory = Path(__file__).parent.resolve()
 long_description = Path(this_directory, 'README.md').read_text()
 
-version = 'v1.3'
+version = 'v1.4'
 
 setup(
     name='procamora-utils',  # How you named your package folder (MyLib)
     packages=['procamora_utils'],  # Chose the same as "name"
-    version=version,  # Start with a small number and increase it with every change you make
+    version=version[1:],  # Start with a small number and increase it with every change you make
     license='gpl-3.0',  # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description='This repository contains a set of libraries that i use in other projects',
     # Give a short description about your library
