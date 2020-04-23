@@ -15,7 +15,7 @@ from procamora_utils.logger import get_logging
 logger: logging = get_logging(False, 'sqlite')
 
 
-def conection_sqlite(database: Path, query: Text, mutex: Lock = None, is_dict: bool = False) \
+def conection_sqlite(database: Path, query: Text, query_params: Tuple = None, mutex: Lock = None, is_dict: bool = False) \
         -> Union[List[Dict[Text, Any]], List[Tuple[Any, ...]], None]:
     if mutex is not None:
         mutex.acquire()  # bloqueamos acceso a db
@@ -25,7 +25,10 @@ def conection_sqlite(database: Path, query: Text, mutex: Lock = None, is_dict: b
             if is_dict:
                 connection.row_factory = _dict_factory
             cursor: sqlite3.Cursor = connection.cursor()
-            cursor.execute(query)
+            if query_params is None:
+                cursor.execute(query)
+            else:  # parameterized query
+                cursor.execute(query, query_params)
 
             data: Optional[List] = None
             if query.upper().startswith('SELECT'):

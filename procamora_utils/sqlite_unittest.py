@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
-from typing import NoReturn, Text, List, Dict, Any
+from typing import NoReturn, Text, List, Dict, Any, Tuple
 
 from procamora_utils.interface_sqlite import *
 
@@ -68,6 +68,17 @@ class TestSQLite(unittest.TestCase):
         query: Text = "SELECT * FROM table1"
         response_query: List[Dict[Text, Any]] = conection_sqlite(self.db, query, is_dict=True)
         self.assertEqual(len(response_query), len(self.expect1), msg="table1 missing values are not expected")
+
+    # ontengo valores de tabla1
+    def test_select_table1_parameterized(self: TestSQLite):
+        """
+        Compruebo que obtiene correctamente todos los valores de la tabla1
+        :return:
+        """
+        query: Text = "SELECT * FROM table1 WHERE value=?"
+        params: Tuple = ('Python',)
+        response_query: List[Dict[Text, Any]] = conection_sqlite(self.db, query, query_params=params, is_dict=True)
+        self.assertEqual(response_query[0]['id'], 1, msg="table1 missing values are not expected")
 
     def test_select_table2(self: TestSQLite):
         """

@@ -105,6 +105,23 @@ def update_host_offline(date: Text):
 ```
 
 
+##### Parameterized query
+
+This library allows the Parameterized of sql queries, here is an example of how to use it
+
+```python
+from pathlib import Path
+from typing import List, Dict, Text, Any, Tuple
+from procamora_utils.interface_sqlite import *
+db: Path = Path('database.db')
+
+query: Text = "SELECT * FROM table1 WHERE value=?"
+params: Tuple = ('Python',)
+response_query: List[Dict[Text, Any]] = conection_sqlite(db, query, query_params=params, is_dict=True)
+```
+
+
+
 #### execute_script_sqlite
 
 
