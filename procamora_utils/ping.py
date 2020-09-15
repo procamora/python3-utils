@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import logging
 import platform
 import subprocess
 from typing import NoReturn, Text, List
 
 from procamora_utils.ip import IP
-from procamora_utils.logger import get_logging
+from procamora_utils.logger import get_logging, logging
 
 logger: logging = get_logging(False, 'ping')
 

@@ -24,6 +24,7 @@ python3 -m pip install --user --upgrade procamora-utils
 - interface_sqlite
 - ip
 - ping
+- client_ssh
 
 
 
@@ -211,6 +212,55 @@ for ip in ips:
 ```
 
 
+
+## client_ssh
+
+
+This library provides a high-level abstraction for storing an IP address or FQDN. In case of entering a wrong value it will raise an exception.
+
+### Basic Usage
+
+```python
+import logging
+from typing import Text
+
+from procamora_utils.ip import IP
+from procamora_utils.logger import get_logging
+logger: logging = get_logging(False, 'ip')
+
+
+fqdn: Text = 'google.es'
+ip: IP = IP(fqdn=fqdn)
+logger.info(ip.get_addr())
+
+ipv4: Text = '192.168.1.1'
+ip: IP = IP(ip=ipv4)
+logger.info(ip.get_addr())
+```
+
+
+
+## ping
+
+This library provides an easy way to use the _ssh_ command, allowing you to connect unattended over SSH and thus facilitating process automation tasks.
+
+### Basic Usage
+
+
+To use this class the first thing to do is import the library:
+
+
+```python
+from procamora_utils.logger import get_logging, logging
+from procamora_utils.client_ssh import create_arg_parser, ClientSSH
+logger: logging = get_logging(False, 'ping')
+
+args = create_arg_parser()
+
+ssh: ClientSSH = ClientSSH(args.ip, args.port, args.verbose)
+output = ssh.execute_command(user=args.user, password=args.pwd, cert=args.key, sudo=args.sudo)
+print(output)
+```
 
 
 

@@ -3,13 +3,12 @@
 
 from __future__ import annotations
 
-import logging
 import re
 from dataclasses import dataclass
-from ipaddress import AddressValueError, ip_interface
+from ipaddress import ip_interface
 from typing import Text, NoReturn
 
-from procamora_utils.logger import get_logging
+from procamora_utils.logger import get_logging, logging
 
 logger: logging = get_logging(False, 'ip')
 
